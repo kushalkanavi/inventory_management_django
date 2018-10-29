@@ -1,0 +1,15 @@
+{% extends "my_app/base.html" %} {% block content %}
+<center>
+	<br>
+	<br>
+	<br>
+    <h1>Welcome to Inventory Management System</h1>
+    <br>
+    <br>
+    <h3 style="color:blue;">Click on Login to login to Inventory Management System</h3>
+    <br>
+    <br>
+    <br>
+    <a href="{%url 'intro:login'%}"><input type="button" name="" value="LOGIN"></a>
+</center>
+{% endblock content %}

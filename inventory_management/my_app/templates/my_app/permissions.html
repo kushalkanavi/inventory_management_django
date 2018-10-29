@@ -1,0 +1,61 @@
+{% extends "my_app/base.html" %} {% block content %}
+<center>
+    <br>
+    <a href="{%url 'intro:main'%}"><input type="button" name="" value="BACK"></a>
+    <br>
+    <br>
+
+    <h2>Permissions to Add Inventory</h2>
+	<table class="table table-hover" style="text-align:center;">
+      <thead>
+        <tr>
+            <td>Assistant</td>
+            <td>Date-Time</td>
+            <td>Accept/Reject</td>
+        </tr>
+    </thead>
+    <tbody>
+        {% for d in add_permissions %}
+        <tr>
+            <td>{{ d.User.first_name }}</td>
+            <td>{{ d.date_time }}</td>
+            <td>
+                <a href="{% url 'intro:acceptPermissions' id=d.id %}"><input type="button" name="" value="Accept"></a>
+                <a href="{% url 'intro:rejectPermissions' id=d.id %}"><input type="button" name="" value="Reject"></a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<br>
+<br>
+<br>
+
+<h2>Permissions to Approve Inventory</h2>
+    <table class="table table-hover" style="text-align:center;">
+      <thead>
+        <tr>
+            <td>Assistant</td>
+            <td>Date-Time</td>
+            <td>Accept/Reject</td>
+        </tr>
+    </thead>
+    <tbody>
+        {% for d in edit_permissions %}
+        <tr>
+            <td>{{ d.User.first_name }}</td>
+            <td>{{ d.Inventory.Product_Name }}</td>
+            <td>{{ d.date_time }}</td>
+            <td>
+                <a href="{% url 'intro:acceptEditPermissions' id=d.id %}"><input type="button" name="" value="Accept"></a>
+                <a href="{% url 'intro:rejectEditPermissions' id=d.id %}"><input type="button" name="" value="Reject"></a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{{ user_data }}
+</center>
+{% endblock content %}

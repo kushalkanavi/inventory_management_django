@@ -1,0 +1,28 @@
+{% extends "my_app/base.html" %} {% block content %}
+<center>
+	<br>
+	<br>
+	<br>
+    
+    <a href="{%url 'intro:main'%}"><input type="button" name="" value="BACK"></a>
+
+    <br>
+    <br>
+    <br>
+    <br>
+    <h3>Product_ID : {{ data.0.Product_ID }}</h3>
+    <h3>Product_Name : {{ data.0.Product_Name }}</h3>
+    <h3>Vendor : {{ data.0.Vendor }}</h3>
+    <h3>MRP : {{ data.0.MRP }}</h3>
+    <h3>Batch_Num : {{ data.0.Batch_Num }}</h3>
+    <h3>Batch_Date : {{ data.0.Batch_Date }}</h3>
+    <h3>Quantity : {{ data.0.Quantity }}</h3>
+    <h3>Status : {{ data.0.Status }}</h3>
+
+    <br>
+    <br>
+    <a href="{% url 'intro:editInventoryPermission' id=id.0 %}"><input type="button" class="btn-lg" name="" value="Ask Permission to Approve"></a>
+    <br>
+
+</center>
+{% endblock content %}

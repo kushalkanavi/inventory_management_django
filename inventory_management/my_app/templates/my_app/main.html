@@ -1,0 +1,162 @@
+{% extends "my_app/base.html" %} {% block content %}
+<center>
+    <br>
+    <br>
+    <br>
+    <a href="{%url 'intro:logout'%}"><input type="button" name="" value="Logout"></a>
+    <br><br>
+    <a href="{%url 'intro:main'%}"><input type="button" name="" value="RESET"></a>
+    {% if role.Store_Manager == True %}
+    <input type="button" name="" value="Add Inventory" data-toggle="modal" data-target="#myModal">
+    {% else %}
+    <input type="button" name="" value="Add Inventory" data-toggle="modal" data-target="#myModal1">
+    {%endif %}
+
+    {% if role.Store_Manager == True %}
+    <a href="{% url 'intro:managerPermissions' %}"><input type="button" name="" value="Permissions"></a>
+    {% else %}
+    <a href="{% url 'intro:assistantPermissions' %}"><input type="button" name="" value="Permissions Requested"></a>
+    {%endif %}
+    <!-- Manager Modal -->
+            <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title" id="myModalLabel">Enter Invetory Info</h4>
+                        </div>
+                        <form action="{%url 'intro:saveInventory' %}" method="POST">
+                            {% csrf_token %}
+                            <div class="modal-body">
+                                {{ form }}
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary">Save changes</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+    <!-- Assistant Modal -->
+            <div class="modal fade" id="myModal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title" id="myModalLabel">Enter Invetory Info</h4>
+                        </div>
+                        <form action="{%url 'intro:addInventoryPermission' %}" method="POST">
+                            {% csrf_token %}
+                            <div class="modal-body">
+                                <h3>Ask Permission</h3>
+                                <h4>If Yes click on Save Change</h4>
+                                <h4>Else click on close</h4>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary">Save changes</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+<br>
+<br>
+<br>
+    <form action="{%url 'intro:inventorySearch' %}" method="POST">
+      {% csrf_token %}
+      <input id="search_text" type="text" name="search" placeholder="Enter Product-Name/Product-ID/Vendor/Status of Inventory to Search" style="width:500px; text-align:center;" />
+      <input class="btn btn-lng btn-danger" id="" type="Submit" value="Search" style="margin-right: 20px;"/>
+    </form>
+<br>
+
+{% if srch %}
+<table class="table table-hover" style="text-align:center;">
+  <thead>
+    <tr>
+        <td>Product_Id</td>
+        <td>Product_Name</td>
+        <td>vendor</td>
+        <td>MRP</td>
+        <td>Batch_Name</td>
+        <td>Batch_Date</td>
+        <td>Quantity</td>
+        <td>Status</td>
+    </tr>
+  </thead>
+  <tbody>
+    {% for d in srch %}
+      <tr>
+        <td>{{ d.Product_ID }}</td>
+        <td>{{ d.Product_Name }}</td>
+        <td>{{ d.Vendor }}</td>
+        <td>{{ d.MRP }}</td>
+        <td>{{ d.Batch_Num }}</td>
+        <td>{{ d.Batch_Date }}</td>
+        <td>{{ d.Quantity }}</td>
+        <td>{{ d.Status }}</td>
+        {% if  d.Status == 'Pending' %}
+        <td>
+            <a href="{% url 'intro:editInventory' id=d.id %}">
+                <button type="button" class="btn btn-default" aria-label="Left Align">
+                    <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
+                </button>
+            </a>
+        </td>
+        {% else %}
+        <td></td>
+        {% endif %}    
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endif %}
+
+<br>
+
+<table class="table table-hover" style="text-align:center;">
+  <thead>
+    <tr>
+        <td>Product_Id</td>
+        <td>Product_Name</td>
+        <td>vendor</td>
+        <td>MRP</td>
+        <td>Batch_Name</td>
+        <td>Batch_Date</td>
+        <td>Quantity</td>
+        <td>Status</td>
+
+    </tr>
+  </thead>
+  <tbody>
+    {% for i,d in data %}
+      <tr>
+        <td>{{ d.Product_ID }}</td>
+        <td>{{ d.Product_Name }}</td>
+        <td>{{ d.Vendor }}</td>
+        <td>{{ d.MRP }}</td>
+        <td>{{ d.Batch_Num }}</td>
+        <td>{{ d.Batch_Date }}</td>
+        <td>{{ d.Quantity }}</td>
+        <td>{{ d.Status }}</td>
+        {% if  d.Status == 'Pending' %}
+        <td>
+            <a href="{% url 'intro:editInventory' id=i %}">
+                <button type="button" class="btn btn-default" aria-label="Left Align">
+                    <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
+                </button>
+            </a>
+        </td>
+        {% else %}
+        <td></td>
+        {% endif %}
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+</center>
+{% endblock content %}
