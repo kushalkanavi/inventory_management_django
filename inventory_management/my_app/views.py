@@ -85,6 +85,8 @@ class editInventory(View):
 		inventory_detail = serializers.serialize('json', invetoryRecord.objects.filter(id = iid).all())
 		inventory_data = [d['fields'] for d in json.loads(inventory_detail)]
 		inventory_ID = [d['pk'] for d in json.loads(inventory_detail)]
+
+		print()
 		
 		context = {
 			'data'	: inventory_data,
@@ -94,8 +96,11 @@ class editInventory(View):
 
 		if role.Store_Manager == True:
 			return render(request,'my_app/manager_edit.html',context)
-		elif permisionsEditInventory.objects.get(Inventory_id = kwargs['id']).Approval_Status:
-			return render(request,'my_app/manager_edit.html',context)
+		
+		elif permisionsEditInventory.objects.filter(Inventory__id = kwargs['id']).exists():
+			if permisionsEditInventory.objects.get(Inventory__id = kwargs['id']).Approval_Status == 'Accepted':
+				return render(request,'my_app/manager_edit.html',context)
+		
 		else:
 			return render(request,'my_app/assistant_edit.html',context)
 
